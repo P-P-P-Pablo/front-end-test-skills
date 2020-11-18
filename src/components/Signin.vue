@@ -1,6 +1,6 @@
 <template>
   <div id="login">
-    <h1>Login</h1>
+    <h1>Sign in</h1>
     <input
       type="text"
       name="username"
@@ -13,18 +13,25 @@
       v-model="input.password"
       placeholder="Password"
     />
-    <button type="button" v-on:click="login()">Login</button>
+    <input
+      type="password"
+      name="passwordconfirmation"
+      v-model="input.password"
+      placeholder="Password confirmation"
+    />
+    <button type="button" v-on:click="Signin()">Sign in</button>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Login",
+  name: "Signin",
   data() {
     return {
       input: {
         username: "",
         password: "",
+        passwordconfirmation: "",
       },
     };
   },
@@ -32,8 +39,8 @@ export default {
     login() {
       if (this.input.username != "" && this.input.password != "") {
         if (
-          this.input.username == this.$parent.mockAccount.username &&
-          this.input.password == this.$parent.mockAccount.password
+          this.input.username == this.$parent.$parent.mockAccount.username &&
+          this.input.password == this.$parent.$parent.mockAccount.password
         ) {
           this.$emit("authenticated", true);
           this.$router.replace({ name: "secure" });

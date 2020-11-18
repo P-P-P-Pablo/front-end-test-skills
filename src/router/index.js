@@ -2,7 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import TodoApp from '../views/TodoApp.vue'
-import Loginpage from '../views/Loginpage.vue'
+import Login from '../views/Login.vue'
+
 
 
 Vue.use(VueRouter)
@@ -28,8 +29,8 @@ const routes = [
   },
   {
     path: '/login',
-    name: 'Login Page',
-    component: Loginpage
+    name: 'login',
+    component: Login
   }
 
 ]
