@@ -29,7 +29,11 @@ export default {
       fetch("/api/tasks")
         .then((res) => res.json())
         .then((json) => {
-          this.todos = json.tasks
+          if (json.error) {
+            this.serverError = json.error
+          } else {
+            this.todos = json.tasks
+          }
         })
     },
 };

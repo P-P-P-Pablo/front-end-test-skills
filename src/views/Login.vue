@@ -31,11 +31,19 @@ export default {
     };
   },
   methods: {
-    login() {
+    async login() {
       if (this.input.username != "" && this.input.password != "") {
+        let user = await fetch(
+          `/api/users/${this.input.username}/${this.input.password}`
+        )
+          .then((res) => res.json())
+          .catch((error) => {
+            console.log(error);
+          });
+        console.log("AAAAA", user.users[0]);
         if (
-          this.input.username == this.$parent.mockAccount.username &&
-          this.input.password == this.$parent.mockAccount.password
+          this.input.username == user.users[0].name &&
+          this.input.password == user.users[0].mdp
         ) {
           this.$emit("authenticated", true);
           this.$router.replace({ name: "Todo App" });
@@ -52,8 +60,8 @@ export default {
 <style scoped>
 #login {
   width: 500px;
-  border: 1px solid #CCCCCC;
-  background-color: #FFFFFF;
+  border: 1px solid #cccccc;
+  background-color: #ffffff;
   margin: auto;
   margin-top: 200px;
   padding: 20px;
