@@ -3,7 +3,7 @@
 
 ## Very light To Do App in VueJs. 
 
-- [ ] The possibility to create an account
+- [x] The possibility to create an account
 
 - [x] The possibility to log in / log off
 

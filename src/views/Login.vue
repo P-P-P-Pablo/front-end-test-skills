@@ -40,7 +40,7 @@ export default {
           .catch((error) => {
             console.log(error);
           });
-        console.log("AAAAA", user.users[0]);
+        
         if (
           this.input.username == user.users[0].name &&
           this.input.password == user.users[0].mdp

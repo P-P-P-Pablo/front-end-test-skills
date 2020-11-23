@@ -36,11 +36,12 @@ function makeServer({
 			});
 			server.create('task', {
 				user: adminList,
-				text: 'Do things'
+				title: 'Do things',
+				completed: true,
 			});
 
 			// commons tasks
-			/* server.create('task', {
+			server.create('task', {
 				title: 'Go workout',
 				completed: false,
 			});
@@ -59,7 +60,7 @@ function makeServer({
 			server.create('task', {
 				title: 'Finish work',
 				completed: true,
-			}); */
+			});
 		},
 
 		routes() {
@@ -81,12 +82,17 @@ function makeServer({
 			this.get('/users/:name/:mdp', (schema, request) => {
 				let name = request.params.name;
 				let mdp = request.params.mdp;
-				console.log (name, mdp)
+				
 
 				return schema.users.where({
 					name: name,
 					mdp: mdp
 				});
+			});
+			this.post('/users', (schema, request) => {
+				let attrs = JSON.parse(request.requestBody);
+
+				return schema.users.create(attrs);
 			});
 			this.get('/users/:id/tasks', (schema, request) => {
 				let userId = request.params.id;

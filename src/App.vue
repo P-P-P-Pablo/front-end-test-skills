@@ -5,6 +5,7 @@
       <router-link to="/about">About</router-link> |
       <router-link v-if="authenticated" to="/todoapp">Todo App</router-link>{{authenticated ? " |" : ""}}
       <router-link v-if="!authenticated" to="/login">Log In</router-link>{{!authenticated ? " |" : ""}}
+      <router-link v-if="!authenticated" to="/signin">SignIn</router-link>{{!authenticated ? " |" : ""}}
       <router-link
         v-if="authenticated"
         to="/login"

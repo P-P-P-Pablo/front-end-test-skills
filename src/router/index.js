@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import TodoApp from '../views/TodoApp.vue'
 import Login from '../views/Login.vue'
-
+import Signin from '../views/Signin.vue'
 
 
 Vue.use(VueRouter)
@@ -31,6 +31,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login
+  },
+  {
+    path: '/signin',
+    name: 'signin',
+    component: Signin
   }
 
 ]
