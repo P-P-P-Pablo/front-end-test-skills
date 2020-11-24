@@ -28,7 +28,7 @@ function makeServer({
 				include: ['user'],
 				embed: true,
 			}),
-			
+
 		},
 		seeds(server) {
 			let adminList = server.create('user', {
@@ -41,7 +41,7 @@ function makeServer({
 				completed: true,
 			});
 
-			
+
 			server.create('task', {
 				user: adminList,
 				title: 'Go workout',
@@ -70,7 +70,7 @@ function makeServer({
 		routes() {
 			this.namespace = 'api';
 
-			this.get('/tasks', (schema) => {
+			/* this.get('/tasks', (schema) => {
 				return schema.tasks.all();
 			});
 			this.post('/tasks', (schema, request) => {
@@ -82,12 +82,12 @@ function makeServer({
 				let id = request.params.id;
 
 				return schema.tasks.find(id).destroy();
-			});
+			}); */
 			this.get('/users/:name/:mdp', (schema, request) => {
 				let name = request.params.name;
 				let mdp = request.params.mdp;
-				
-				
+
+
 				return schema.users.where({
 					name: name,
 					mdp: mdp
@@ -100,11 +100,35 @@ function makeServer({
 			});
 			this.get('/users/:id/tasks', (schema, request) => {
 				let userId = request.params.id;
-				let user = schema.users.findBy({id: userId});
+				let user = schema.users.findBy({
+					id: userId
+				});
 				console.log("user", user.task)
-				
+
 
 				return user.task;
+			});
+			this.post('/users/:id/tasks', (schema, request) => {
+				let userId = request.params.id;
+				let user = schema.users.findBy({
+					id: userId
+				});
+				let newTask = request.requestBody
+				let attrs = JSON.parse({
+					...newTask,
+					user: user
+				});
+
+				return schema.tasks.create(attrs);
+			});
+			this.delete('/users/:userId/tasks/:taskId', (schema, request) => {
+				let userId = request.params.userId;
+				let taskId = request.params.taskId;
+				let user = schema.users.findBy({
+					id: userId
+				});
+
+				return user.task.find(taskId).destroy();
 			});
 		},
 	});

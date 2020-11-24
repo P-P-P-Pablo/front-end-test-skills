@@ -18,34 +18,74 @@ export default {
     };
   },
   methods: {
-    addTodo(newTodoObj) {
-      this.todos = [...this.todos, newTodoObj];
-    },
-    deleteTodo(todoId) {
-      this.todos = this.todos.filter((todo) => todo.id !== todoId);
-    },
-  },
-  async created() {
-    
-     await fetch(`/api/users/${this.$route.params.id}/tasks`)
+    async addTodo(newTodoObj) {
+      await fetch(`/api/users/${this.$route.params.id}/tasks`, {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          ...newTodoObj,
+        }),
+      })
+        .then((res) => res.json())
+        .catch((error) => {
+          console.log(error);
+        });
+      await fetch(`/api/users/${this.$route.params.id}/tasks`)
         .then((res) => res.json())
         .then((json) => {
           if (json.error) {
-            this.serverError = json.error
+            this.serverError = json.error;
           } else {
-            this.todos = json.tasks
-            console.log("todos", json)
+            this.todos = json.tasks;
+            console.log("todos", json);
           }
-        })
+        });
     },
+    async deleteTodo(todoId) {
+      await fetch(`/api/users/${this.$route.params.id}/tasks/${todoId}`, {
+        method: "delete",
+      })
+        .then((res) => res.json())
+        .catch((error) => {
+          console.log(error);
+        });
+
+      await fetch(`/api/users/${this.$route.params.id}/tasks`)
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.error) {
+            this.serverError = json.error;
+          } else {
+            this.todos = json.tasks;
+            console.log("todos", json);
+          }
+        });
+    },
+  },
+  async created() {
+    await fetch(`/api/users/${this.$route.params.id}/tasks`)
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.error) {
+          this.serverError = json.error;
+        } else {
+          this.todos = json.tasks;
+          console.log("todos", json);
+        }
+      });
+  },
 };
 </script>
 
 <style scoped>
-    #todoApp {
-        background-color: #FFFFFF;
-        border: 1px solid #CCCCCC;
-        padding: 20px;
-        margin-top: 10px;
-    }
+#todoApp {
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  padding: 20px;
+  margin-top: 10px;
+}
 </style>
