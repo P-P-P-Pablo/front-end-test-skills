@@ -25,14 +25,16 @@ export default {
       this.todos = this.todos.filter((todo) => todo.id !== todoId);
     },
   },
-  created() {
-      fetch("/api/tasks")
+  async created() {
+    
+     await fetch(`/api/users/${this.$route.params.id}/tasks`)
         .then((res) => res.json())
         .then((json) => {
           if (json.error) {
             this.serverError = json.error
           } else {
             this.todos = json.tasks
+            console.log("todos", json)
           }
         })
     },

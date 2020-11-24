@@ -28,6 +28,7 @@ function makeServer({
 				include: ['user'],
 				embed: true,
 			}),
+			
 		},
 		seeds(server) {
 			let adminList = server.create('user', {
@@ -40,11 +41,14 @@ function makeServer({
 				completed: true,
 			});
 
-			// commons tasks
+			
 			server.create('task', {
+				user: adminList,
 				title: 'Go workout',
 				completed: false,
 			});
+
+			// commons tasks
 			server.create('task', {
 				title: 'Do laundry',
 				completed: false,
@@ -83,7 +87,7 @@ function makeServer({
 				let name = request.params.name;
 				let mdp = request.params.mdp;
 				
-
+				
 				return schema.users.where({
 					name: name,
 					mdp: mdp
@@ -96,9 +100,11 @@ function makeServer({
 			});
 			this.get('/users/:id/tasks', (schema, request) => {
 				let userId = request.params.id;
-				let user = schema.users.find(userId);
+				let user = schema.users.findBy({id: userId});
+				console.log("user", user.task)
+				
 
-				return user.tasks;
+				return user.task;
 			});
 		},
 	});

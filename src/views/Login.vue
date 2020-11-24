@@ -33,20 +33,23 @@ export default {
   methods: {
     async login() {
       if (this.input.username != "" && this.input.password != "") {
-        let user = await fetch(
+        let requete = await fetch(
           `/api/users/${this.input.username}/${this.input.password}`
         )
           .then((res) => res.json())
           .catch((error) => {
             console.log(error);
           });
+
+        let user = {name: requete.users[0].name, mdp: requete.users[0].mdp, id: requete.users[0].id}
         
         if (
-          this.input.username == user.users[0].name &&
-          this.input.password == user.users[0].mdp
+          this.input.username == user.name &&
+          this.input.password == user.mdp
         ) {
           this.$emit("authenticated", true);
-          this.$router.replace({ name: "Todo App" });
+          this.$emit("connecteduser", user);
+          this.$router.replace({ path: `/todoapp/${user.id}` });
         } else {
           console.log("The username and / or password is incorrect");
         }

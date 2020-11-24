@@ -23,7 +23,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
-    path: '/todoapp',
+    path: '/todoapp/:id',
     name: 'Todo App',
     component: TodoApp
   },

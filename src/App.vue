@@ -1,11 +1,18 @@
 <template>
   <div id="app">
     <div id="nav">
+      <h1 v-if="authenticated">
+        Welcome {{ connecteduser.name + " #" + connecteduser.id }}
+      </h1>
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
-      <router-link v-if="authenticated" to="/todoapp">Todo App</router-link>{{authenticated ? " |" : ""}}
-      <router-link v-if="!authenticated" to="/login">Log In</router-link>{{!authenticated ? " |" : ""}}
-      <router-link v-if="!authenticated" to="/signin">SignIn</router-link>{{!authenticated ? " |" : ""}}
+      <router-link v-if="authenticated" :to="'/todoapp/' + connecteduser.id"
+        >Todo App</router-link
+      >{{ authenticated ? " |" : "" }}
+      <router-link v-if="!authenticated" to="/login">Log In</router-link
+      >{{ !authenticated ? " |" : "" }}
+      <router-link v-if="!authenticated" to="/signin">SignIn</router-link
+      >{{ !authenticated ? " |" : "" }}
       <router-link
         v-if="authenticated"
         to="/login"
@@ -14,35 +21,37 @@
         >Logout</router-link
       >
     </div>
-    <router-view @authenticated="setAuthenticated" />
+    <router-view @authenticated="setAuthenticated" @connecteduser="setUser" />
   </div>
 </template>
 <script>
-    export default {
-        name: 'App',
-        data() {
-            return {
-                authenticated: false,
-                mockAccount: {
-                    username: "admin",
-                    password: "pass"
-                }
-            }
-        },
-        mounted() {
-            if(!this.authenticated) {
-                this.$router.replace({ name: "login" });
-            }
-        },
-        methods: {
-            setAuthenticated(status) {
-                this.authenticated = status;
-            },
-            logout() {
-                this.authenticated = false;
-            }
-        }
+export default {
+  name: "App",
+  data() {
+    return {
+      authenticated: false,
+      connecteduser: { name: "", mdp: "", id: "" },
+    };
+  },
+  mounted() {
+    if (!this.authenticated) {
+      this.$router.replace({ name: "login" });
     }
+  },
+  methods: {
+    setAuthenticated(status) {
+      this.authenticated = status;
+    },
+    setUser(status) {
+      this.connecteduser.name = status.name;
+      this.connecteduser.mdp = status.mdp;
+      this.connecteduser.id = status.id;
+    },
+    logout() {
+      this.authenticated = false;
+    },
+  },
+};
 </script>
 
 <style>
